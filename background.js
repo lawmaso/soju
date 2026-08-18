@@ -1,18 +1,8 @@
-const ON = "ON";
-const OFF = "OFF";
-const URL_PATTERN = "https://*.google.com/search*";
+import CONFIG from "./CONFIG.js";
 
-async function broadcastSashimiState(on = true, text = ON) {
+async function broadcastSashimiState(on = true, text = CONFIG.ON) {
     await chrome.storage.local.set({ on });
     chrome.action.setBadgeText({ text });
-
-    const tabs = await chrome.tabs.query({ url: URL_PATTERN });
-    for (const tab of tabs) {
-        chrome.scripting.executeScript({
-            files: ["sashimi.js"],
-            target: { tabId: tab.id }
-        });
-    }
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
@@ -20,11 +10,11 @@ chrome.runtime.onInstalled.addListener(async () => {
     if (state.on === undefined) {
         await broadcastSashimiState();
     } else {
-        await broadcastSashimiState(state.on, state.on ? ON : OFF);
+        await broadcastSashimiState(state.on, state.on ? CONFIG.ON : CONFIG.OFF);
     }
 });
 
 chrome.action.onClicked.addListener(async (tab) => {
     const state = await chrome.storage.local.get(["on"]);
-    await broadcastSashimiState(!state.on, state.on ? OFF : ON);
+    await broadcastSashimiState(!state.on, state.on ? CONFIG.OFF : CONFIG.ON);
 });
