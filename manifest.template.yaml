@@ -1,10 +1,10 @@
 {
     "manifest_version": 3,
-    "name": "Sashimi - AI Overview Toggle",
-    "description": "A simple UI toggle",
-    "version": "1.0",
+    "name": __NAME__,
+    "description": __DESCRIPTION__,
+    "version": __VERSION__,
     "action": {
-        "default_title": "Toggle Sashimi"
+        "default_title": __DEFAULT_TITLE__
     },
     "background": {
         "service_worker": "background.js",
@@ -13,7 +13,7 @@
     "content_scripts": [
         {
             "js": ["sashimi.js"],
-            "matches": ["https://*.google.com/*"],
+            "matches": __MATCHES__,
             "run_at": "document_start"
         }
     ],
