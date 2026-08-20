@@ -4,6 +4,11 @@ async function broadcastSojuState(on = true, text = CONFIG.ON) {
     await chrome.storage.local.set({ on });
     chrome.action.setBadgeText({ text });
     chrome.action.setBadgeBackgroundColor({ color: on ? CONFIG.ON_COLOR : CONFIG.OFF_COLOR });
+
+    const tabs = await chrome.tabs.query({ url: CONFIG.MATCHES });
+    for (const tab of tabs) {
+        chrome.tabs.sendMessage(tab.id, { on });
+    }
 }
 
 async function initSoju() {

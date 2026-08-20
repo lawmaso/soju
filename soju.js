@@ -57,15 +57,18 @@ function uninjectSoju() {
     document.getElementById(SOJU_ID)?.remove();
 }
 
-async function updateState() {
-    const { on } = await chrome.storage.local.get(["on"]);
+async function updateState(on) {
     on ? observeAndInject() : uninjectSoju();
 }
 
-chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === "local" && "on" in changes) {
-        updateState();
-    }
+chrome.runtime.onMessage.addListener((message, sender) => {
+    updateState(message.on);
 });
 
-updateState();
+
+async function main() {
+    const { on } = await chrome.storage.local.get(["on"]);
+    updateState(on);
+}
+
+main();

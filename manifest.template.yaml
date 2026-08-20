@@ -17,5 +17,5 @@
             "run_at": "document_start"
         }
     ],
-    "permissions": ["storage"]
+    "permissions": ["storage", "tabs"]
 }
