@@ -10,7 +10,8 @@ import fs from "fs";
 import path from "path";
 import CONFIG from "./config.js";
 
-const MANIFEST_TEMPLATE = "manifest.template.yaml"
+const MANIFEST_TEMPLATE = "manifest.template.yaml";
+const BUILD_SCRIPT = import.meta.filename.split("/").at(-1);
 const DIST = "dist";
 const EXCLUDE = new Set([DIST, MANIFEST_TEMPLATE]);
 
@@ -31,6 +32,7 @@ try {
     fs.writeFileSync(`${DIST}/manifest.json`, manifest);
     for (const sojuFile of fs.readdirSync("./")) {
         if (
+            sojuFile == BUILD_SCRIPT ||
             sojuFile.startsWith(".") ||
             EXCLUDE.has(sojuFile)
         ) {
