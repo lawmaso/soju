@@ -1,4 +1,4 @@
-var SASHIMI_ID = "_sashimi";
+var SOJU_ID = "_soju";
 
 function buildCSSSelectors(overviewChild, overviewChildSelector) {
     let selectors = ["div#appbar"];
@@ -13,14 +13,14 @@ function buildCSSSelectors(overviewChild, overviewChildSelector) {
     return selectors;
 }
 
-function injectSashimi(cssSelectors) {
-    let sashimiStyle = document.getElementById(SASHIMI_ID);
-    if (!sashimiStyle) {
-        sashimiStyle = document.createElement("style");
-        sashimiStyle.id = SASHIMI_ID;
-        document.documentElement.appendChild(sashimiStyle);
+function injectSoju(cssSelectors) {
+    let sojuStyle = document.getElementById(SOJU_ID);
+    if (!sojuStyle) {
+        sojuStyle = document.createElement("style");
+        sojuStyle.id = SOJU_ID;
+        document.documentElement.appendChild(sojuStyle);
     }
-    sashimiStyle.innerText = cssSelectors.join(",").concat("{ display: none !important; }");
+    sojuStyle.innerText = cssSelectors.join(",").concat("{ display: none !important; }");
 }
 
 var observer = null;
@@ -28,13 +28,13 @@ var observer = null;
 function observeAndInject(overviewChildSelector = "div[data-cb-scope][data-lf-template-root]") {
     observer?.disconnect();
 
-    const sashimiInjected = () => {
+    const sojuInjected = () => {
         const overviewChild = document.querySelector(overviewChildSelector);
         if (!overviewChild) {
             return false;
         }
 
-        injectSashimi(buildCSSSelectors(overviewChild, overviewChildSelector));
+        injectSoju(buildCSSSelectors(overviewChild, overviewChildSelector));
 
         observer?.disconnect();
         observer = null;
@@ -42,24 +42,24 @@ function observeAndInject(overviewChildSelector = "div[data-cb-scope][data-lf-te
         return true;
     };
 
-    if (sashimiInjected()) {
+    if (sojuInjected()) {
         return;
     }
 
-    observer = new MutationObserver(sashimiInjected);
+    observer = new MutationObserver(sojuInjected);
     observer.observe(document.documentElement, { childList: true, subtree: true });
 }
 
-function uninjectSashimi() {
+function uninjectSoju() {
     observer?.disconnect();
     observer = null;
 
-    document.getElementById(SASHIMI_ID)?.remove();
+    document.getElementById(SOJU_ID)?.remove();
 }
 
 async function updateState() {
     const { on } = await chrome.storage.local.get(["on"]);
-    on ? observeAndInject() : uninjectSashimi();
+    on ? observeAndInject() : uninjectSoju();
 }
 
 chrome.storage.onChanged.addListener((changes, area) => {

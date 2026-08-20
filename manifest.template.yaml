@@ -12,7 +12,7 @@
     },
     "content_scripts": [
         {
-            "js": ["sashimi.js"],
+            "js": ["soju.js"],
             "matches": __MATCHES__,
             "run_at": "document_start"
         }
