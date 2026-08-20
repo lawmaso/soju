@@ -40,7 +40,7 @@ try {
         fs.copyFileSync(sojuFile, `${DIST}/${sojuFile}`);
     }
 
-    console.log(`Soju built successfully`);
+    console.log(`Soju created successfully`);
 } catch (err) {
     console.error(err);
 }
