@@ -1,4 +1,4 @@
-import CONFIG from "./CONFIG.js";
+import CONFIG from "./config.js";
 
 async function broadcastSojuState(on = true, text = CONFIG.ON) {
     await chrome.storage.local.set({ on });
