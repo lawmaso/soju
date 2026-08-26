@@ -17,5 +17,6 @@
             "run_at": "document_start"
         }
     ],
-    "permissions": ["storage", "tabs"]
+    "permissions": ["scripting", "storage", "tabs"],
+    "host_permissions": __MATCHES__
 }

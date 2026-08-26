@@ -1,4 +1,4 @@
-import CONFIG from "./CONFIG.js";
+import CONFIG from "./config.js";
 
 async function broadcastSojuState(on = true, text = CONFIG.ON) {
     await chrome.storage.local.set({ on });
@@ -7,7 +7,15 @@ async function broadcastSojuState(on = true, text = CONFIG.ON) {
 
     const tabs = await chrome.tabs.query({ url: CONFIG.MATCHES });
     for (const tab of tabs) {
-        chrome.tabs.sendMessage(tab.id, { on });
+        chrome.tabs.sendMessage(tab.id, { on }).catch((err) => {
+            chrome.scripting.executeScript({
+                target: { tabId: tab.id },
+                files: ["soju.js"],
+                injectImmediately: true
+            })
+                .then(() => {})
+                .catch((err) => {});
+        });
     }
 }
 
