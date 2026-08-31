@@ -1,0 +1,42 @@
+name: build and release soju
+
+on:
+  push:
+    branches: [main]
+  
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      
+      - name: build /dist
+        run: node build.js
+      
+      - name: zip /dist folder
+        run: cd dist && zip -r ../soju.zip ./ && cd ../
+      
+      - name: extract app version from config
+        id: appinfo
+        run: |
+          NAME=$(node -pe "require('fs').readFileSync('config.js','utf8').match(/NAME:\s*\"([^\"]+)\"/)[1].split(' - ')[0]")
+          VERSION=$(node -pe "require('fs').readFileSync('config.js','utf8').match(/VERSION:\s*\"([^\"]+)\"/)[1]")
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      
+      - name: create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.appinfo.outputs.version }}-${{ github.run_number }}
+          name: ${{ steps.appinfo.outputs.name }} v${{ steps.appinfo.outputs.version }}
+          files: soju.zip
