@@ -13,7 +13,7 @@ const MANIFEST_TEMPLATE = "manifest.template.yaml";
 const BUILD_SCRIPT = import.meta.filename.split("/").at(-1);
 const DIST = "dist";
 const SOUNDS = "sounds";
-const EXCLUDE = new Set([DIST, MANIFEST_TEMPLATE]);
+const EXCLUDE = new Set([DIST, MANIFEST_TEMPLATE, "README.md", "soju.excalidraw"]);
 
 try {
     let manifest = fs.readFileSync(MANIFEST_TEMPLATE, "utf8");
