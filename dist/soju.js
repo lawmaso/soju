@@ -1,8 +1,8 @@
 var SOJU_ID = "_soju";
 
 function buildCSSSelectors(overviewChild, overviewChildSelector) {
-    let selectors = ["div#appbar"];
-    selectors.shift();
+    let selectors = ["div#appbar + div + div"];  // side UI
+
     const inSearchResults = overviewChild.closest("div#search");
 
     if (inSearchResults) {
