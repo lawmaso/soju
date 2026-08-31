@@ -7,12 +7,12 @@
 */
 
 import fs from "fs";
-import path from "path";
 import CONFIG from "./config.js";
 
 const MANIFEST_TEMPLATE = "manifest.template.yaml";
 const BUILD_SCRIPT = import.meta.filename.split("/").at(-1);
 const DIST = "dist";
+const SOUNDS = "sounds";
 const EXCLUDE = new Set([DIST, MANIFEST_TEMPLATE]);
 
 try {
@@ -29,17 +29,30 @@ try {
     }
 
     fs.mkdirSync(DIST);
-    fs.writeFileSync(`${DIST}/manifest.json`, manifest);
+    fs.writeFileSync(DIST.concat("/manifest.json"), manifest);
     for (const sojuFile of fs.readdirSync("./")) {
         if (
             sojuFile == BUILD_SCRIPT ||
             sojuFile.startsWith(".") ||
             EXCLUDE.has(sojuFile)
         ) {
-            continue
+            continue;
         }
 
-        fs.copyFileSync(sojuFile, `${DIST}/${sojuFile}`);
+        if (sojuFile == SOUNDS) {
+            const distSoundDir = DIST.concat(`/${SOUNDS}`);
+            fs.mkdirSync(distSoundDir);
+
+            for (const soundFile of fs.readdirSync(sojuFile)) {
+                fs.copyFileSync(
+                    sojuFile.concat(`/${soundFile}`),
+                    distSoundDir.concat(`/${soundFile}`)
+                );
+            }
+
+            continue;
+        }
+        fs.copyFileSync(sojuFile, DIST.concat(`/${sojuFile}`));
     }
 
     console.log(`Soju built successfully`);

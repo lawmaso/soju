@@ -17,6 +17,15 @@
             "run_at": "document_start"
         }
     ],
-    "permissions": ["scripting", "storage", "tabs"],
-    "host_permissions": __MATCHES__
+    "permissions": ["commands", "offscreen", "scripting", "storage", "tabs"],
+    "host_permissions": __MATCHES__,
+    "commands": {
+        "toggle": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+S",
+                "mac": "Command+Shift+S"
+            },
+            "description": "Toggle Soju"
+        }
+    }
 }
