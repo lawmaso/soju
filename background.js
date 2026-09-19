@@ -23,7 +23,7 @@ async function setupOffscreen(path) {
     }
 }
 
-async function broadcastSojuState(on = true, text = CONFIG.ON) {
+async function broadcastSojuState(on = true, text = CONFIG.ON, sound = false) {
     await chrome.storage.local.set({ on });
     chrome.action.setBadgeText({ text });
     chrome.action.setBadgeBackgroundColor({ color: on ? CONFIG.ON_COLOR : CONFIG.OFF_COLOR });
@@ -43,11 +43,13 @@ async function broadcastSojuState(on = true, text = CONFIG.ON) {
     }
 
     // Send message to offscreen
-    await setupOffscreen("offscreen.html");
-    chrome.runtime.sendMessage({
-        target: "offscreen",
-        soundTarget: on ? "on" : "off"
-    });
+    if (sound) {
+        await setupOffscreen("offscreen.html");
+        chrome.runtime.sendMessage({
+            target: "offscreen",
+            soundTarget: on ? "on" : "off"
+        });
+    }
 }
 
 // Initializes app
