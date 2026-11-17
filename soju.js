@@ -8,7 +8,8 @@ function buildCSSSelectors(overviewChild, overviewChildSelector) {
     if (inSearchResults) {
         selectors.push(`div:has(> div > ${overviewChildSelector})`);
     } else {
-        selectors.push(`div:has(> div > div > div > div > div > div > ${overviewChildSelector})`);
+        // NOTE: the new HTML structure is less nested, so a div was removed
+        selectors.push(`div:has(> div > div > div > div > div > ${overviewChildSelector})`);
     }
 
     return selectors;
