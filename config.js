@@ -1,7 +1,7 @@
 const CONFIG = {
     NAME:          "Soju - AI Overview Toggle",
     DESCRIPTION:   "A simple toggle for hiding AI overviews on Google Search",
-    VERSION:       "1.0",
+    VERSION:       "1.1",
     DEFAULT_TITLE: "Toggle Soju",
     MATCHES:       ["https://*.google.com/*"],
     SOJU_ID:       "_soju",
