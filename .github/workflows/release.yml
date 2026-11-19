@@ -27,6 +27,9 @@ jobs:
       - name: build /dist
         run: npm run build
 
+      - name: run tests
+        run: npm run test
+
       - name: zip /dist folder
         run: cd dist && zip -r ../soju.zip ./ && cd ../
 
