@@ -6,8 +6,7 @@
 
 export const OVERVIEW_CHILD_SELECTOR = "div[data-cb-scope][data-lf-template-root]";
 export const SIDE_PANEL_SELECTOR = "div#appbar + div + div";
-export const SEARCH_RESULTS_SELECTOR = "div#appbar";
-
+export const SEARCH_RESULTS_SELECTOR = "div#search";
 
 export function buildSelectors(
     overviewChild,
@@ -20,8 +19,10 @@ export function buildSelectors(
     } else {
         selectors.push(`div:has(> div > div > div > div > ${childSelector})`);
     }
+
+    return selectors;
 }
 
 export function buildCSS(selectors) {
-    return selectors.join(",").concat(`{ display: none !important ;}`)
+    return selectors.join(",").concat(`{ display: none !important; }`)
 }
