@@ -3,7 +3,9 @@ name: build and release soju
 on:
   push:
     branches: [main]
-  
+  pull_request:
+    branches: [main]
+
 permissions:
   contents: write
 
@@ -17,23 +19,28 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-      
+          node-version: 22
+
+      - name: install dependencies
+        run: npm ci
+
       - name: build /dist
-        run: node build.js
-      
+        run: npm run build
+
       - name: zip /dist folder
         run: cd dist && zip -r ../soju.zip ./ && cd ../
-      
+
       - name: extract app version from config
         id: appinfo
         run: |
-          NAME=$(node -pe "require('fs').readFileSync('config.js','utf8').match(/NAME:\s*\"([^\"]+)\"/)[1].split(' - ')[0]")
-          VERSION=$(node -pe "require('fs').readFileSync('config.js','utf8').match(/VERSION:\s*\"([^\"]+)\"/)[1]")
-          echo "name=$NAME" >> "$GITHUB_OUTPUT"
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-      
+          node --input-type=module -e "
+            const { default: c } = await import('./src/config.js');
+            console.log('name=' + c.NAME.split(' - ')[0]);
+            console.log('version=' + c.VERSION);
+          " >> "$GITHUB_OUTPUT"
+
       - name: create release
+        if: github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.appinfo.outputs.version }}-${{ github.run_number }}
