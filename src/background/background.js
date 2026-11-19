@@ -36,7 +36,7 @@ export function createBackground({ chrome, config, logger = console }) {
     async function applyState(on, { sound = false } = {}) {
         await chrome.storage.local.set({ [key]: on });
 
-        const badge = badgeFor(on);
+        const badge = badgeFor(on, config);
         await chrome.action.setBadgeText({ text: badge.text });
         await chrome.action.setBadgeBackgroundColor({ color: badge.color });
 
