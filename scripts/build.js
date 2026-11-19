@@ -7,7 +7,7 @@
 */
 
 import fs from "fs";
-import CONFIG from "./config.js";
+import CONFIG from "../src/config.js";
 
 const MANIFEST_TEMPLATE = "manifest.template.yaml";
 const BUILD_SCRIPT = import.meta.filename.split("/").at(-1);
